@@ -8,7 +8,7 @@ int main() {
   std::string dstr, val1="0", val2="0";
 
   // date
-  time_t timer = time(NULL);
+  time_t timer = time(NULL) - 60 * 60 * 3;
   struct tm *date = localtime(&timer), input;
   std::cout << "Input date (default: ";
   std::cout << date->tm_year+1900 << "/"
@@ -34,8 +34,8 @@ int main() {
   std::getline(std::cin, val2);
 
   // convert to serial in unit of days
-  // (9 hours shift to use in the end of day)
-  int serial = (int)((timer - 60 * 60 * 9) / (60 * 60 * 24));
+  // (Use Berkeley Time)
+  int serial = (int)((timer - 60 * 60 * 8) / (60 * 60 * 24));
 
   // output to file
   std::ofstream ofs("atm.dat", std::ios::app);
