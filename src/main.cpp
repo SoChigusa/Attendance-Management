@@ -1,3 +1,4 @@
+#include <boost/algorithm/string.hpp>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -10,16 +11,20 @@ int main() {
   // date
   time_t timer = time(NULL) - 60 * 60 * 3;
   struct tm *date = localtime(&timer), input;
-  std::cout << "Input date (default: ";
+  std::cout << "Input date from today (n <= 0) (default: ";
   std::cout << date->tm_year+1900 << "/"
 	    << date->tm_mon+1 << "/"
 	    << date->tm_mday;
   std::cout << "): ";
   std::getline(std::cin, dstr);
   if(dstr != "") {
-    strptime(dstr.c_str(), "%Y/%m/%d", &input);
-    input.tm_hour = 12;
-    timer = std::mktime(&input);
+    // std::mktime not working properly on macOS arm 2020/12/11
+    // strptime(dstr.c_str(), "%Y/%m/%d", &input);
+    // input.tm_hour = 12;
+    // timer = std::mktime(&input);
+    int n = stoi(dstr);
+    timer += n*60*60*24;
+
     // std::cout << input.tm_year+1900 << "/"
     // 	      << input.tm_mon+1 << "/"
     // 	      << input.tm_mday;
@@ -42,7 +47,7 @@ int main() {
   ofs << serial << "\t"
       << val1 << "\t"
       << val2 << std::endl;
-    
+
   return 0;
-    
+
 }
