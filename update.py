@@ -22,6 +22,8 @@ import subprocess
 import shutil
 import plot
 print('Now updating...')
+subprocess.run(['git','commit','-a','-m','"Auto commit by update.py"'])
+subprocess.run(['git','push','origin','main'])
 shutil.copy('plot.png', '/Users/SoChigusa/works/homepage/')
 shutil.copy('atm.dat', '/Users/SoChigusa/works/homepage/')
 shutil.copy('plot.png', '/Users/SoChigusa/works/sochigusa.bitbucket.org/')
