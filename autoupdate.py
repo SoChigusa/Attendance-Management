@@ -7,7 +7,7 @@ def openGoogleForm():
     from selenium.webdriver.common.keys import Keys
     from selenium.webdriver.support.ui import WebDriverWait
 
-    chrome = webdriver.Chrome("./driver/chromedriver")
+    chrome = webdriver.Chrome("/Users/SoChigusa/works/Attendance-Management/driver/chromedriver")
 
     # Googleフォームを開く
     chrome.get('https://docs.google.com/forms/d/e/1FAIpQLSdJelnqnhninHvi4U2tw1BpDdjYi7yAQnRH_UPqhNt7inX8JQ/viewform?usp=sf_link')
@@ -30,7 +30,7 @@ def readFromSpread():
 
     #認証情報設定
     #ダウンロードしたjsonファイル名をクレデンシャル変数に設定（秘密鍵、Pythonファイルから読み込みしやすい位置に置く）
-    credentials = ServiceAccountCredentials.from_json_keyfile_name('secrets/workloads-and-moods-091ba6839e7b.json', scope)
+    credentials = ServiceAccountCredentials.from_json_keyfile_name('/Users/SoChigusa/works/Attendance-Management/secrets/workloads-and-moods-091ba6839e7b.json', scope)
 
     #OAuth2の資格情報を使用してGoogle APIにログインします。
     gc = gspread.authorize(credentials)
@@ -99,8 +99,9 @@ def update():
     import os
     import subprocess
     import shutil
+    os.chdir('/Users/SoChigusa/works/Attendance-Management/')
     subprocess.run(['git','pull'])
-    subprocess.run(['git','commit','-a','-m','"Auto commit by update.py"'])
+    subprocess.run(['git','commit','-a','-m','"Auto commit by autoupdate.py"'])
     subprocess.run(['git','push'])
     shutil.copy('plot.png', '/Users/SoChigusa/works/sochigusa.bitbucket.org/')
     os.chdir('/Users/SoChigusa/works/sochigusa.bitbucket.org/')
