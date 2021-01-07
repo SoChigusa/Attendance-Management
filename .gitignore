@@ -67,3 +67,7 @@ Thumbs.db
 
 # bibtex log
 *.blg
+
+# secret files
+secrets/
+driver/

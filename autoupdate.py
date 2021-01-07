@@ -101,12 +101,12 @@ def update():
     import shutil
     subprocess.run(['git','pull'])
     subprocess.run(['git','commit','-a','-m','"Auto commit by update.py"'])
-    subprocess.run(['git','push','origin','main'])
+    subprocess.run(['git','push'])
     shutil.copy('plot.png', '/Users/SoChigusa/works/sochigusa.bitbucket.org/')
     os.chdir('/Users/SoChigusa/works/sochigusa.bitbucket.org/')
     subprocess.run(['git','pull'])
     subprocess.run(['git','commit','-a','-m','"Auto commit by mental health update"'])
-    subprocess.run(['git','push','origin','master'])
+    subprocess.run(['git','push'])
 
 openGoogleForm()
 date, data = readFromSpread()
