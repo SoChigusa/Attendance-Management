@@ -1,16 +1,19 @@
+#!/usr/local/bin/python3
+# coding: utf-8
+import yaml
 import numpy as np
 import datetime
 from datetime import timedelta
 
-def openGoogleForm():
+def openGoogleForm(cf):
     from selenium import webdriver
     from selenium.webdriver.common.keys import Keys
     from selenium.webdriver.support.ui import WebDriverWait
 
-    chrome = webdriver.Chrome("/Users/SoChigusa/works/Attendance-Management/driver/chromedriver")
+    chrome = webdriver.Chrome(cf['webdriver'])
 
     # Googleフォームを開く
-    chrome.get('https://docs.google.com/forms/d/e/1FAIpQLSdJelnqnhninHvi4U2tw1BpDdjYi7yAQnRH_UPqhNt7inX8JQ/viewform?usp=sf_link')
+    chrome.get(cf['URL'])
 
     # タブが閉じられるのを待つ
     WebDriverWait(chrome, 60*60*24).until(lambda d: len(d.window_handles) == 0)
@@ -18,7 +21,7 @@ def openGoogleForm():
     # 終了処理
     chrome.quit()
 
-def readFromSpread():
+def readFromSpread(cf):
     import gspread
     import json
 
@@ -30,13 +33,13 @@ def readFromSpread():
 
     #認証情報設定
     #ダウンロードしたjsonファイル名をクレデンシャル変数に設定（秘密鍵、Pythonファイルから読み込みしやすい位置に置く）
-    credentials = ServiceAccountCredentials.from_json_keyfile_name('/Users/SoChigusa/works/Attendance-Management/secrets/workloads-and-moods-091ba6839e7b.json', scope)
+    credentials = ServiceAccountCredentials.from_json_keyfile_name(cf['json'], scope)
 
     #OAuth2の資格情報を使用してGoogle APIにログインします。
     gc = gspread.authorize(credentials)
 
     #共有設定したスプレッドシートキーを変数[SPREADSHEET_KEY]に格納する。
-    SPREADSHEET_KEY = '1Z0ks-Bo9pe_lJGla17NQgUz3y8Om_PpK9Dictinu_jA'
+    SPREADSHEET_KEY = cf['spreadsheet-key']
 
     #共有設定したスプレッドシートのシート1を開く
     worksheet = gc.open_by_key(SPREADSHEET_KEY).sheet1
@@ -109,7 +112,11 @@ def update():
     subprocess.run(['git','commit','-a','-m','"Auto commit by mental health update"'])
     subprocess.run(['git','push'])
 
-openGoogleForm()
-date, data = readFromSpread()
+# 設定ファイルの読み込み
+with open('config.yml', 'r') as yml:
+    config = yaml.load(yml, Loader=yaml.SafeLoader)
+
+openGoogleForm(config)
+date, data = readFromSpread(config)
 plot(date, data)
 update()
