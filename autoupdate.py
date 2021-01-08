@@ -113,7 +113,7 @@ def update():
     subprocess.run(['git','push'])
 
 # 設定ファイルの読み込み
-with open('config.yml', 'r') as yml:
+with open('/Users/SoChigusa/works/Attendance-Management/config.yml', 'r') as yml:
     config = yaml.load(yml, Loader=yaml.SafeLoader)
 
 openGoogleForm(config)

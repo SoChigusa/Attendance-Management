@@ -71,3 +71,4 @@ Thumbs.db
 # secret files
 secrets/
 driver/
+config.yml
