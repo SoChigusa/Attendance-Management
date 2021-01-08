@@ -118,5 +118,5 @@ with open('/Users/SoChigusa/works/Attendance-Management/config.yml', 'r') as yml
 
 openGoogleForm(config)
 date, data = readFromSpread(config)
-plot(cf, date, data)
+plot(config, date, data)
 update()
