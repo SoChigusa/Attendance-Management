@@ -60,7 +60,7 @@ def readFromSpread(cf):
     data = np.array([serial, y, color]).transpose()
     return date, data
 
-def plot(date, data):
+def plot(cf, date, data):
     import matplotlib.pyplot as plt
 
     # figure settings and data
@@ -96,7 +96,7 @@ def plot(date, data):
     ax.legend(fontsize=15, loc='best')
 
     plt.tight_layout()
-    plt.savefig('plot.png', bbox_inches='tight')
+    plt.savefig(cf['plot'], bbox_inches='tight')
 
 def update():
     import os
@@ -118,5 +118,5 @@ with open('/Users/SoChigusa/works/Attendance-Management/config.yml', 'r') as yml
 
 openGoogleForm(config)
 date, data = readFromSpread(config)
-plot(date, data)
+plot(cf, date, data)
 update()

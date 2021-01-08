@@ -4,6 +4,9 @@ webdriver:
 json:
   ''
 
+plot:
+  '/Users/SoChigusa/works/Attendance-Management/plot.png'
+
 URL:
   'https://docs.google.com/forms/d/e/1FAIpQLSdJelnqnhninHvi4U2tw1BpDdjYi7yAQnRH_UPqhNt7inX8JQ/viewform?usp=sf_link'
 
