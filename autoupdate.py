@@ -12,8 +12,11 @@ def openGoogleForm(cf):
 
     chrome = webdriver.Chrome(cf['webdriver'])
 
+    # 日付を取得しフォームにプリセット
+    today = datetime.date.today()
+
     # Googleフォームを開く
-    chrome.get(cf['URL'])
+    chrome.get(cf['URL']+'&entry.185365554='+str(today))
 
     # タブが閉じられるのを待つ
     WebDriverWait(chrome, 60*60*24).until(lambda d: len(d.window_handles) == 0)
