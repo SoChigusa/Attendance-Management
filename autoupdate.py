@@ -16,13 +16,53 @@ def openGoogleForm(cf):
     today = datetime.date.today()
 
     # Googleフォームを開く
-    chrome.get(cf['URL']+'&entry.185365554='+str(today))
+    chrome.get(cf['URL']+'&entry.'+cf['entry-date']+'='+str(today))
 
     # タブが閉じられるのを待つ
     WebDriverWait(chrome, 60*60*24).until(lambda d: len(d.window_handles) == 0)
 
     # 終了処理
     chrome.quit()
+
+def Mood2Num(input):
+    if input == 'Cheerful':
+        out = 2
+    elif input == 'Soso':
+        out = 1
+    else:
+        out = 0
+    return out
+
+def Workload2Num(input):
+    if input == 'None':
+        out = 0
+    elif input == '0 -- 1 hour':
+        out = 1
+    elif input == '1 -- 2 hours':
+        out = 2
+    elif input == '2 -- 3 hours':
+        out = 3
+    elif input == '3 -- 4 hours':
+        out = 4
+    elif input == '4 -- 5 hours':
+        out = 5
+    elif input == '5 -- 6 hours':
+        out = 6
+    elif input == '6 -- 7 hours':
+        out = 7
+    elif input == '7 -- 8 hours':
+        out = 8
+    elif input == '8 -- 9 hours':
+        out = 9
+    elif input == '9 -- 10 hours':
+        out = 10
+    elif input == '10 -- 11 hours':
+        out = 11
+    elif input == '11 -- 12 hours':
+        out = 12
+    else:
+        out = 13
+    return out
 
 def readFromSpread(cf):
     import gspread
@@ -49,14 +89,14 @@ def readFromSpread(cf):
 
     #セルの値を受け取る
     c2 = worksheet.col_values(2)
-    c5 = worksheet.col_values(5)
-    c6 = worksheet.col_values(6)
-    for c in [c2, c5, c6]:
+    c3 = worksheet.col_values(3)
+    c4 = worksheet.col_values(4)
+    for c in [c2, c3, c4]:
         c.pop(0)
     date = list(map(lambda l: datetime.datetime.strptime(l, '%Y/%m/%d').date(), c2))
     serial = list(map(lambda l: (l - datetime.date(1970,1,1)).days, date))
-    color = list(map(int, c5))
-    y = list(map(int, c6))
+    color = np.vectorize(Mood2Num)(c3)
+    y = np.vectorize(Workload2Num)(c4)
 
     # 戻り値
     date = np.array(date)
@@ -88,9 +128,9 @@ def plot(cf, date, data):
            xticklabels=[date[0],date[center1],date[center2],date[-1]])
 
     # y-axis
-    ax.set_ylim(-0.1, 3.1)
-    ax.set_ylabel('How hard did you work?', size=15)
-    ax.set(yticks=[0,1,2,3], yticklabels=['hardly', 'a little', 'well', 'hard'])
+    ax.set_ylim(-0.1, 13.1)
+    ax.set_ylabel('How long did you work?', size=15)
+    ax.set(yticks=[0,1,2,3,4,5,6,7,8,9,10,11,12,13], yticklabels=['None', '1h', '2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h', '10h', '11h', '12h', '12h+'])
 
     # legend
     ax.scatter(data[0,0], 100, color=color[2], label='cheerful')
